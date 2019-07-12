@@ -48,8 +48,12 @@ def dl_prompt():
         'name': 'source',
         'choices': [{
             'key': 'r',
-            'name': 'Reddit',
-            'value': 'reddit',
+            'name': 'Reddit user',
+            'value': 'redditu',
+        }, {
+            'key': 't',
+            'name': 'Subreddit',
+            'value': 'subreddit',
         }, {
             'key': 't',
             'name': 'Twitter',
@@ -57,7 +61,7 @@ def dl_prompt():
         }]
     }, {
         'type': 'input',
-        'message': 'Enter the user\'s name to download his public messages.',
+        'message': 'Enter the user\'s (or subreddit\'s) name to download his public messages.',
         'name': 'user',
     }, {
         'type': 'confirm',
@@ -67,8 +71,10 @@ def dl_prompt():
 
     answers = prompt(dl_menu, style=style)
 
-    if answers['source'] == 'reddit':
+    if answers['source'] == 'redditu':
         scraper.scrape_reddit(answers['user'], not answers['include_all'])
+    elif answers['source'] == 'subreddit':
+        scraper.scrape_subreddit(answers['user'], not answers['include_all'])
     elif answers['source'] == 'twitter':
         scraper.scrape_twitter(answers['user'], not answers['include_all'])
 

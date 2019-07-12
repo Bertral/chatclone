@@ -67,3 +67,28 @@ def scrape_reddit(username: str, exclude_comments=False):
 
         print("Reddit content saved successfully.")
 
+
+def scrape_subreddit(subreddit: str, exclude_comments=False):
+    # load config
+    with open('settings.json') as json_config:
+        config = json.load(json_config)
+
+    # API authentification
+    reddit = praw.Reddit(client_id=config['reddit']['client_id'],
+                         client_secret=config['reddit']['client_secret'],
+                         user_agent=config['reddit']['user_agent'])
+
+    print("Fetching reddit posts from {} ...".format(subreddit), end='')
+    with codecs.open('data/reddit_{}.txt'.format(subreddit), "w+", "utf") as out_file:
+        for post in reddit.subreddit(subreddit).top(limit=None):
+            print(f"{post.title}", file=out_file)
+            print(f"{post.selftext}\n", file=out_file)
+        print(" done.")
+
+        if not exclude_comments:
+            print("Fetching reddit comments from {} ...".format(subreddit), end='')
+            for comment in reddit.subreddit(subreddit).comments(limit=None):
+                print(f"{comment.body}\n", file=out_file)
+            print(" done.")
+
+        print("Reddit content saved successfully.")
