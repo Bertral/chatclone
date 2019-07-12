@@ -1,4 +1,4 @@
-# Chatclone
+# Chatclone (WIP)
 
 A simple chatbot that you can train to act like any reddit or twitter user of your choice.
 
